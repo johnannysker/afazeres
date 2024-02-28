@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:afazeres/models/tarefa.dart';
 
 class Taskarea extends StatefulWidget {
   const Taskarea({super.key});
@@ -9,7 +10,11 @@ class Taskarea extends StatefulWidget {
 
 final TextEditingController campoTarefa = TextEditingController();
 
+List<Tarefa> task = [];
+
 class _TaskareaState extends State<Taskarea> {
+  String? erroText;
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -21,20 +26,63 @@ class _TaskareaState extends State<Taskarea> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Expanded(
-                child: TextField(
-                    controller: campoTarefa,
-                    decoration: const InputDecoration(
-                        border: OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(8.0))),
-                        labelText: 'Adicione uma tarefa',
-                        hintText: 'Ex. Dinner with Mary',
-                        errorText: null,
-                        focusedBorder: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: Color(0xff00d7f3), width: 2)),
-                        labelStyle: TextStyle(color: Color(0xff00d7f3)))),
+              Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                        controller: campoTarefa,
+                        decoration: InputDecoration(
+                            border: const OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(8.0))),
+                            labelText: 'Adicione uma tarefa',
+                            hintText: 'Ex. Dinner with Mary',
+                            hintStyle: const TextStyle(
+                                color: Color.fromARGB(255, 124, 124, 124)),
+                            errorText: erroText,
+                            focusedBorder: const OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Color(0xff00d7f3), width: 2)),
+                            labelStyle:
+                                const TextStyle(color: Color(0xff00d7f3)))),
+                  ),
+                  const SizedBox(
+                    //Sepára o campo de texto do botão '+'
+                    width: 8,
+                  ),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xff00d7f3),
+                      padding: const EdgeInsets.all(14),
+                    ),
+                    onPressed: () {
+                      String text = campoTarefa.text;
+
+                      if (text.isEmpty) {
+                        setState(() {
+                          erroText = 'ATENÇÂO! Adicione o titulo da tarefa.';
+                        });
+                        return;
+                      }
+
+                      setState(() {
+                        Tarefa novaTarefa =
+                            Tarefa(title: text, dateTime: DateTime.now());
+                        task.add(novaTarefa);
+                        erroText = null;
+                      });
+                      campoTarefa.clear();
+                      //todoRepository.saveListTarefa(tarefas);
+                    },
+                    child: const Icon(
+                      Icons.add,
+                      size: 30,
+                    ),
+                  )
+                ],
+              ),
+              const SizedBox(
+                height: 16,
               ),
             ],
           ),
