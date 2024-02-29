@@ -52,8 +52,10 @@ class _TaskareaState extends State<Taskarea> {
                   ),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10)),
                       backgroundColor: const Color(0xff00d7f3),
-                      padding: const EdgeInsets.all(14),
+                      padding: const EdgeInsets.all(16),
                     ),
                     onPressed: () {
                       String text = campoTarefa.text;
