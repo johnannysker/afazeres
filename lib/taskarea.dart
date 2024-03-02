@@ -77,6 +77,7 @@ class _TaskareaState extends State<Taskarea> {
                       //todoRepository.saveListTarefa(tarefas);
                     },
                     child: const Icon(
+                      color: Colors.black54,
                       Icons.add,
                       size: 30,
                     ),
@@ -86,6 +87,15 @@ class _TaskareaState extends State<Taskarea> {
               const SizedBox(
                 height: 16,
               ),
+              Row(
+                children: [
+                  Expanded(
+                      child: Text(
+                    "Você possui ${task.length} tarefas pendentes",
+                    style: const TextStyle(color: Colors.cyanAccent),
+                  ))
+                ],
+              )
             ],
           ),
         ),
