@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:afazeres/models/tarefa.dart';
+import 'package:afazeres/widget/cardtask.dart';
+import 'package:afazeres/repository/af_repositories.dart';
 
 class Taskarea extends StatefulWidget {
   const Taskarea({super.key});
@@ -9,11 +11,59 @@ class Taskarea extends StatefulWidget {
 }
 
 final TextEditingController campoTarefa = TextEditingController();
-
-List<Tarefa> task = [];
+final AfRepository afRepository = AfRepository();
 
 class _TaskareaState extends State<Taskarea> {
+  List<Tarefa> task = [];
+  Tarefa? tarefasDeletadas;
+  int? posTarefaDeletada;
+
+  //callback para deletar uma tarefa
+  void onDelete(Tarefa tarefa) {
+    tarefasDeletadas = tarefa;
+    posTarefaDeletada = task.indexOf(tarefa);
+    setState(() {
+      task.remove(tarefa);
+    });
+    afRepository.saveListTarefa(task);
+
+    ScaffoldMessenger.of(context)
+        .clearSnackBars(); //limpa a mensagem do Snackbar
+//Widget que avisa quando a tarefa for deletada
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          'A tarefa ${tarefa.title} foi removida!',
+          style: const TextStyle(color: Color(0xffffffff), fontSize: 15),
+        ),
+        backgroundColor: Colors.purple[900],
+        action: SnackBarAction(
+          label: 'Desfazer',
+          textColor: const Color(0xff00d7f3),
+          onPressed: () {
+            setState(() {
+              //devolvendo a tarefa excluida na lista de tarefas
+              task.insert(posTarefaDeletada!, tarefasDeletadas!);
+            });
+            afRepository.saveListTarefa(task);
+          },
+        ),
+        duration: const Duration(seconds: 5),
+      ),
+    );
+  }
+
   String? erroText;
+
+  @override
+  void initState() {
+    super.initState();
+    afRepository.getListTarefa().then((value) {
+      setState(() {
+        task = value;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +124,7 @@ class _TaskareaState extends State<Taskarea> {
                         erroText = null;
                       });
                       campoTarefa.clear();
-                      //todoRepository.saveListTarefa(tarefas);
+                      afRepository.saveListTarefa(task);
                     },
                     child: const Icon(
                       color: Colors.black54,
@@ -90,10 +140,21 @@ class _TaskareaState extends State<Taskarea> {
               Row(
                 children: [
                   Expanded(
-                      child: Text(
-                    "Você possui ${task.length} tarefas pendentes",
-                    style: const TextStyle(color: Colors.cyanAccent),
-                  ))
+                    child: Text(
+                      "Você possui ${task.length} tarefas pendentes",
+                      style: const TextStyle(color: Colors.cyanAccent),
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 8,
+                  ),
+                  ElevatedButton(
+                      onPressed: dialogoDeConfirmacaoDeExclusao,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xff00d7f3),
+                        padding: const EdgeInsets.all(6),
+                      ),
+                      child: const Text('Limpar tudo'))
                 ],
               )
             ],
@@ -101,5 +162,50 @@ class _TaskareaState extends State<Taskarea> {
         ),
       ),
     ));
+  }
+
+//Caixa de dialogo para confirmação de exclusão das tarefas
+  void dialogoDeConfirmacaoDeExclusao() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text(
+          'Limpar tudo?',
+          style: TextStyle(color: Color(0xff00d7f3)),
+        ),
+        content: const Text('Confirme se deseja excluir todas as tarefas.'),
+        actions: [
+          TextButton(
+              //Botão cancelar
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              style: TextButton.styleFrom(backgroundColor: Colors.deepPurple),
+              child: const Text(
+                'Cancelar',
+                style: TextStyle(color: Colors.white),
+              )),
+          TextButton(
+              //Botão confirmar
+              onPressed: () {
+                Navigator.of(context).pop();
+                deleteTodasTarefas(); //chamando método para excluir tudo
+              },
+              style: TextButton.styleFrom(backgroundColor: Colors.redAccent),
+              child: const Text(
+                'Confirmar',
+                style: TextStyle(color: Colors.white),
+              ))
+        ],
+      ),
+    );
+  }
+
+  //Método de deletar todas as tarefas
+  void deleteTodasTarefas() {
+    setState(() {
+      task.clear();
+    });
+    afRepository.saveListTarefa(task);
   }
 }
