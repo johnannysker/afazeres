@@ -29,20 +29,20 @@ class Cardtask extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(4),
-            color: Colors.grey[200],
+            color: const Color.fromARGB(255, 81, 122, 133),
           ),
           padding: const EdgeInsets.all(16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Text(DateFormat("dd/MM/yyyy").format(afazer.dateTime),
-                  style: const TextStyle(fontSize: 12)),
+                  style: const TextStyle(fontSize: 12, color: Colors.white70)),
               Text(
                 afazer.title,
                 style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                ),
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: Color.fromARGB(255, 221, 221, 221)),
               ),
             ],
           ),

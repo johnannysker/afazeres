@@ -81,6 +81,7 @@ class _TaskareaState extends State<Taskarea> {
                   Expanded(
                     child: TextField(
                         controller: campoTarefa,
+                        style: const TextStyle(color: Colors.white),
                         decoration: InputDecoration(
                             border: const OutlineInputBorder(
                                 borderRadius:
@@ -137,6 +138,17 @@ class _TaskareaState extends State<Taskarea> {
               const SizedBox(
                 height: 16,
               ),
+              Flexible(
+                  child: ListView(
+                shrinkWrap: true,
+                children: [
+                  for (Tarefa tsk in task)
+                    Cardtask(afazer: tsk, onDelete: onDelete),
+                ],
+              )),
+              const SizedBox(
+                height: 16,
+              ),
               Row(
                 children: [
                   Expanded(
@@ -154,7 +166,10 @@ class _TaskareaState extends State<Taskarea> {
                         backgroundColor: const Color(0xff00d7f3),
                         padding: const EdgeInsets.all(6),
                       ),
-                      child: const Text('Limpar tudo'))
+                      child: const Text(
+                        'Limpar tudo',
+                        style: TextStyle(color: Colors.black, fontSize: 12),
+                      ))
                 ],
               )
             ],
