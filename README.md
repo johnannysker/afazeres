@@ -1,5 +1,6 @@
 # afazeres
-
+<h3>Imagem da interface</h3><br>
+<img src="https://github.com/johnannysker/afazeres/blob/main/assets/image/interface.png"><br>
 A new Flutter project.
 
 ## Getting Started
