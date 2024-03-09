@@ -69,13 +69,26 @@ class _TaskareaState extends State<Taskarea> {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
-      backgroundColor: const Color.fromARGB(255, 51, 49, 63),
+      backgroundColor: const Color(0xff24293e),
       body: Center(
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
+              const Padding(
+                padding: EdgeInsets.only(right: 180),
+                child: Text(
+                  "Sua lista\nde afazeres",
+                  style: TextStyle(
+                      color: Color(0xff457b9d),
+                      fontSize: 25,
+                      fontFamily: "Poppins"),
+                ),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
               Row(
                 children: [
                   Expanded(
@@ -93,9 +106,9 @@ class _TaskareaState extends State<Taskarea> {
                             errorText: erroText,
                             focusedBorder: const OutlineInputBorder(
                                 borderSide: BorderSide(
-                                    color: Color(0xff00d7f3), width: 2)),
+                                    color: Color(0xff8ebbff), width: 2)),
                             labelStyle:
-                                const TextStyle(color: Color(0xff00d7f3)))),
+                                const TextStyle(color: Color(0xff8ebbff)))),
                   ),
                   const SizedBox(
                     //Sepára o campo de texto do botão '+'
@@ -105,7 +118,7 @@ class _TaskareaState extends State<Taskarea> {
                     style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10)),
-                      backgroundColor: const Color(0xff00d7f3),
+                      backgroundColor: const Color(0xff8ebbff),
                       padding: const EdgeInsets.all(16),
                     ),
                     onPressed: () {
@@ -154,7 +167,8 @@ class _TaskareaState extends State<Taskarea> {
                   Expanded(
                     child: Text(
                       "Você possui ${task.length} tarefas pendentes",
-                      style: const TextStyle(color: Colors.cyanAccent),
+                      style: const TextStyle(
+                          color: Color.fromARGB(255, 233, 233, 233)),
                     ),
                   ),
                   const SizedBox(
@@ -163,12 +177,15 @@ class _TaskareaState extends State<Taskarea> {
                   ElevatedButton(
                       onPressed: dialogoDeConfirmacaoDeExclusao,
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xff00d7f3),
-                        padding: const EdgeInsets.all(6),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8)),
+                        backgroundColor:
+                            const Color.fromARGB(255, 233, 233, 233),
+                        padding: const EdgeInsets.all(8),
                       ),
                       child: const Text(
                         'Limpar tudo',
-                        style: TextStyle(color: Colors.black, fontSize: 12),
+                        style: TextStyle(color: Colors.black, fontSize: 14),
                       ))
                 ],
               )
@@ -186,7 +203,7 @@ class _TaskareaState extends State<Taskarea> {
       builder: (context) => AlertDialog(
         title: const Text(
           'Limpar tudo?',
-          style: TextStyle(color: Color(0xff00d7f3)),
+          style: TextStyle(color: Color(0xff24293e)),
         ),
         content: const Text('Confirme se deseja excluir todas as tarefas.'),
         actions: [

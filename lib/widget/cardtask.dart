@@ -29,7 +29,7 @@ class Cardtask extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(4),
-            color: const Color.fromARGB(255, 81, 122, 133),
+            color: const Color(0xff457b9d),
           ),
           padding: const EdgeInsets.all(16),
           child: Column(
